@@ -13,7 +13,7 @@ public class mainstick : MonoBehaviour
         {
             other.GetComponent<PlayerMovement>().stickCount += 1;
             GameObject.Destroy(gameObject);
-            //Firething.dietime += 0.3f; 
+            
         }
     }
 }

@@ -9,21 +9,25 @@ public class CameraBob : MonoBehaviour
     [Range(0, 30)] public float Frequency = 10;
     public float YStrength = 1;
     public float XStrength = 0.5f;
-
     public Transform Camera;
     public Transform CameraHolder;
-
     public float ToggleSpeed = 3;
-    Vector3 StartPos;
     CharacterController controller;
+    public bool IsRotating = false;
+
+    Vector3 StartPos;
+    Quaternion StartRot;
 
     private void Update()
     {
         if (Enable) 
         {
             CheckMotion();
-            ResetPosition();
-            CameraHolder.LookAt(FocusTarget());
+            if (!IsRotating)
+            {
+                ResetPosition();
+                CameraHolder.LookAt(FocusTarget());
+            }
         }
     }
 
@@ -31,6 +35,7 @@ public class CameraBob : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         StartPos = Camera.localPosition;
+        StartRot = Camera.localRotation;
     }
 
     void PlayMotion(Vector3 motion) 
@@ -38,12 +43,21 @@ public class CameraBob : MonoBehaviour
         Camera.localPosition += motion;
     }
 
+    void PlayMotion(Quaternion motion)
+    {
+        Camera.localRotation *= motion;
+    }
+
     void CheckMotion()
     {
 
         if (controller.GetComponent<PlayerMovement>().PlayerState != PlayerMovement.CurrentState.Walk) return;
         if (!controller.isGrounded) return;
-        PlayMotion(FootStepMotion());
+
+        if (!IsRotating)
+            PlayMotion(FootStepMotion());
+        else
+            PlayMotion(FootStepRotation());
     }
 
     Vector3 FootStepMotion()
@@ -54,10 +68,25 @@ public class CameraBob : MonoBehaviour
         return pos;
     }
 
+    Quaternion FootStepRotation()
+    {
+        Quaternion pos = new Quaternion(0,0,0,0);
+        pos.y += Mathf.Sin(Time.time * Frequency) * Amplitude;
+        pos.x += Mathf.Cos(Time.time * Frequency / 2) * Amplitude * 2;
+        return pos;
+    }
+
     void ResetPosition()
     {
-        if (Camera.localPosition == StartPos) return;
-        Camera.localPosition = Vector3.Lerp(Camera.localPosition, StartPos, Time.deltaTime);
+        if (!IsRotating)
+        {
+            if (Camera.localPosition == StartPos) return;
+            Camera.localPosition = Vector3.Lerp(Camera.localPosition, StartPos, Time.deltaTime);
+        }
+        else
+        {
+            if (Camera.localRotation == StartRot) return;
+        }
     }
 
     Vector3 FocusTarget()
@@ -66,4 +95,6 @@ public class CameraBob : MonoBehaviour
         pos += CameraHolder.forward * 15;
         return pos;
     }
+
+
 }
