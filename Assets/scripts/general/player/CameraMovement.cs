@@ -50,16 +50,16 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    IEnumerator PauseGame()
+    IEnumerable PauseGame()
     {
         SceneManager.LoadSceneAsync("pause", LoadSceneMode.Additive);
         Time.timeScale = 0;
         return null;
     }
 
-    IEnumerator UnPauseGame()
+    IEnumerable UnPauseGame()
     {
-        SceneManager.UnloadSceneAsync("pause"   );
+        SceneManager.UnloadSceneAsync("pause");
         Time.timeScale = 1;
         return null;
     }

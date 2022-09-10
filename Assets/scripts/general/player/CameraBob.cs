@@ -15,6 +15,9 @@ public class CameraBob : MonoBehaviour
     CharacterController controller;
     public bool IsRotating = false;
 
+    //public int XRotStop = 1000;
+    //public int YRotStop = 1000;
+
     Vector3 StartPos;
     Quaternion StartRot;
 
@@ -57,25 +60,26 @@ public class CameraBob : MonoBehaviour
         if (!IsRotating)
             PlayMotion(FootStepMotion());
         else
-            PlayMotion(FootStepRotation());
+            return;
+            //PlayMotion(FootStepRotation());
     }
 
     Vector3 FootStepMotion()
     {
         Vector3 pos = Vector3.zero;
-        pos.y += Mathf.Sin(Time.time * Frequency) * Amplitude;
-        pos.x += Mathf.Cos(Time.time * Frequency / 2) * Amplitude *2;
+        pos.y += Mathf.Cos(Time.time * Frequency) * Amplitude;
+        pos.x += Mathf.Sin(Time.time * Frequency / 2) * Amplitude *2;
         return pos;
     }
-
+    /*
     Quaternion FootStepRotation()
     {
         Quaternion pos = new Quaternion(0,0,0,0);
-        pos.y += Mathf.Sin(Time.time * Frequency) * Amplitude;
-        pos.x += Mathf.Cos(Time.time * Frequency / 2) * Amplitude * 2;
+        pos.y += Mathf.Sin(Time.time * Frequency) * (Amplitude / YRotStop);
+        pos.x += Mathf.Cos(Time.time * Frequency / 2) * (Amplitude / XRotStop);
         return pos;
     }
-
+    */
     void ResetPosition()
     {
         if (!IsRotating)
@@ -86,6 +90,7 @@ public class CameraBob : MonoBehaviour
         else
         {
             if (Camera.localRotation == StartRot) return;
+            Camera.localRotation = Quaternion.Lerp(Camera.localRotation, StartRot, Time.deltaTime);
         }
     }
 
