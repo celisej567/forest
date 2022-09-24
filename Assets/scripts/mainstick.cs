@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class mainstick : MonoBehaviour
 {
-    public fireplace Firething;
+    public Fireplace Firething;
 
     private void OnTriggerEnter(Collider other)
     {

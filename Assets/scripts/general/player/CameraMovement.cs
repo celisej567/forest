@@ -15,8 +15,6 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-
-
     }
 
     private void FixedUpdate()
@@ -35,6 +33,14 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape)) 
         {
+            GameRules gr = GameObject.FindObjectOfType<GameRules>();
+
+            if(gr.LoseStarted)
+            {
+                StartCoroutine("Restart");
+                return;
+            }
+
             if (!pause)
             {
                 Cursor.lockState = CursorLockMode.Confined;
@@ -50,17 +56,24 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
-    IEnumerable PauseGame()
+    IEnumerator PauseGame()
     {
         SceneManager.LoadSceneAsync("pause", LoadSceneMode.Additive);
         Time.timeScale = 0;
         return null;
     }
 
-    IEnumerable UnPauseGame()
+    IEnumerator UnPauseGame()
     {
         SceneManager.UnloadSceneAsync("pause");
         Time.timeScale = 1;
+        return null;
+    }
+
+    IEnumerator Restart()
+    {
+        SceneManager.UnloadSceneAsync("game");
+        SceneManager.LoadSceneAsync("game");
         return null;
     }
 

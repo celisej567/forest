@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class fireplace : MonoBehaviour
+public class Fireplace : MonoBehaviour
 {
     public Light firelight;
     public float magnitude = 2;
