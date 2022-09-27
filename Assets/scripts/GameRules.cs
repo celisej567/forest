@@ -12,16 +12,14 @@ public class GameRules : MonoBehaviour
 
     public Fireplace fireplace;
 
-    [Space]
+    [Header("Lose things")]
     public GameObject LoseImage;
     public Vector2 LoseImageStartScale;
     public Quaternion LoseImageStartRotation;
-
     public bool LoseStarted = false;
-
-
     public Vector2 LoseImageStopScale;
     public Quaternion LoseImageStopRotation;
+    public AudioClip LoseAudio;
 
     void Start()
     {
@@ -46,14 +44,17 @@ public class GameRules : MonoBehaviour
                 LoseStarted = true;
                 LoseImage.SetActive(true);
                 LoseImage.transform.localScale = LoseImageStartScale;
-                LoseImage.transform.localRotation = LoseImageStartRotation;
+                LoseImage.transform.rotation = LoseImageStartRotation;
+                AudioSource bb = gameObject.AddComponent<AudioSource>();
+                bb.clip = LoseAudio;
+                bb.Play();
             }
         }
 
         if(LoseStarted)
         {
             LoseImage.transform.localScale = Vector2.Lerp(LoseImage.transform.localScale, LoseImageStopScale, Time.deltaTime);
-            LoseImage.transform.localRotation = Quaternion.Lerp(LoseImage.transform.localRotation, LoseImageStopRotation, Time.deltaTime);
+            LoseImage.transform.rotation = Quaternion.Lerp(LoseImage.transform.rotation, LoseImageStopRotation, Time.deltaTime);
         }
     }
 }

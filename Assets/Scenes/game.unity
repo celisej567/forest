@@ -21021,10 +21021,11 @@ MonoBehaviour:
   fireplace: {fileID: 677355415}
   LoseImage: {fileID: 2127466308}
   LoseImageStartScale: {x: 0, y: 0}
-  LoseImageStartRotation: {x: 0, y: 0, z: -0.8191521, w: -0.57357633}
+  LoseImageStartRotation: {x: 0, y: 0, z: 0, w: 1}
   LoseStarted: 0
   LoseImageStopScale: {x: 4.24, y: 1.83}
   LoseImageStopRotation: {x: 0, y: 0, z: 0, w: 0}
+  LoseAudio: {fileID: 8300000, guid: dc896058066dec849997ffb0e547cdf5, type: 3}
 --- !u!4 &1169605884
 Transform:
   m_ObjectHideFlags: 0
